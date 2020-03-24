@@ -1,8 +1,73 @@
-﻿@{
+﻿@model HomePageViewMode
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<div>
+
+<table border="1">
+    <tr>
+        <td>Country</td>
+        <td>Confirmed</td>
+        <td>Recovered</td>
+        <td>Deaths</td>
+    </tr>
+    <tr>
+        <td>Germany</td>
+        <td>
+            @Model.GermanyLastUpdate.ConfirmedCases
+        </td>
+        <td>
+            @Model.GermanyLastUpdate.RecoveredCases
+        </td>
+        <td>
+            @Model.GermanyLastUpdate.DeathCases
+        </td>
+    </tr>
+    <tr>
+        <td>Bulgaria</td>
+        <td>
+            @Model.BulgariaLastUpdate.ConfirmedCases
+        </td>
+        <td>
+            @Model.BulgariaLastUpdate.RecoveredCases
+        </td>
+        <td>
+            @Model.BulgariaLastUpdate.DeathCases
+        </td>
+    </tr>
+    <tr>
+        <td>Belgium</td>
+        <td>
+            @Model.BelgiumLastUpdate.ConfirmedCases
+        </td>
+        <td>
+            @Model.BelgiumLastUpdate.RecoveredCases
+        </td>
+        <td>
+            @Model.BelgiumLastUpdate.DeathCases
+        </td>
+    </tr>
+</table>    
+
+    @* <table>
+        @foreach(var item in Model.CovidInfo)
+        {
+            <tr>
+                <td>@item.Country</td>
+                <td>@item.Province</td>
+                <td>@item.Date</td>
+                <td>@item.ConfirmedCases</td>
+                <td>@item.RecoveredCases</td>
+                <td>@item.DeathCases</td>
+            </tr>
+        }
+    </table> *@
 </div>
