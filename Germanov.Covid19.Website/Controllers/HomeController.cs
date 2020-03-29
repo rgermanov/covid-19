@@ -30,7 +30,10 @@ namespace Germanov.Covid19.Website.Controllers
                 CovidInfo = stats,
                 GermanyLastUpdate = GetConfirmedCasesByCountry("Germany", stats),
                 BulgariaLastUpdate = GetConfirmedCasesByCountry("Bulgaria", stats),
-                BelgiumLastUpdate = GetConfirmedCasesByCountry("Belgium", stats)
+                BelgiumLastUpdate = GetConfirmedCasesByCountry("Belgium", stats),
+                ChartSeries = stats
+                                .Where(item => item.Country.Equals("Germany", StringComparison.InvariantCulture))
+                                .ToList()
             };
             
             return View(viewModel);

@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "d3@5.15.0",
+      "destination": "wwwroot\\lib\\d3"
+    },
+    {
+      "library": "chartist@0.11.4",
+      "destination": "wwwroot\\lib\\chartist"
+    },
+    {
+      "library": "chartist-plugin-legend@0.6.2",
+      "destination": "wwwroot\\lib\\chartist-plugin-legend"
+    }
+  ]
+}

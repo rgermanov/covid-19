@@ -11,5 +11,7 @@ namespace Germanov.Covid19.Website.Models
         public CovidInfoModel BulgariaLastUpdate { get; set; }
 
         public CovidInfoModel BelgiumLastUpdate { get; set; }
+
+        public List<CovidInfoModel> ChartSeries { get; set; }
     }
 }
