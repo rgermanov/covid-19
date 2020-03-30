@@ -14,7 +14,7 @@ namespace Germanov.Covid19.Website.Services
 
         public CovidDailyStatsService()
         {
-            _fileNamePath = ".\\App_Data\\covid_19_data.csv";
+            _fileNamePath = ".\\App_Data\\full_data.csv";
         }
         public IEnumerable<CovidInfoModel> GetStats()
         {
@@ -30,12 +30,12 @@ namespace Germanov.Covid19.Website.Services
                     while(csv.Read())
                     {
                         records.Add(new CovidInfoModel{
-                            Province = csv.GetField<string>("Province/State"),
-                            Country = csv.GetField<string>("Country/Region"),
-                            Date = csv.GetField<DateTime>("ObservationDate"),
-                            ConfirmedCases = csv.TryGetField<decimal>("Confirmed", out decimal confirmed) ? confirmed : 0,
-                            RecoveredCases = csv.TryGetField<decimal>("Recovered", out decimal recovered) ? recovered : 0,
-                            DeathCases = csv.TryGetField<decimal>("Deaths", out decimal deaths) ? deaths : 0
+                            //Province = csv.GetField<string>("Province/State"),
+                            Country = csv.GetField<string>("location"),
+                            Date = csv.GetField<DateTime>("date"),
+                            ConfirmedCases = csv.TryGetField<decimal>("total_cases", out decimal confirmed) ? confirmed : 0,
+                            //RecoveredCases = csv.TryGetField<decimal>("Recovered", out decimal recovered) ? recovered : 0,
+                            DeathCases = csv.TryGetField<decimal>("total_deaths", out decimal deaths) ? deaths : 0
                         });
                     }
 

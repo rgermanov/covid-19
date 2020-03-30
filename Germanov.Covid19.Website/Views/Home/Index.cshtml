@@ -2,117 +2,104 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    
-    var chartSeries = Model.ChartSeries
-                                .Where(item => item.Date > new DateTime(2020, 03, 03).Date)
-                                .OrderBy(item => item.Date);
 
-    var italyData = Model.CovidInfo
-                        .Where(item => item.Country.Equals("Italy", StringComparison.InvariantCultureIgnoreCase))
-                        .Where(item => item.Date > new DateTime(2020, 03, 03).Date)
-                        .OrderBy(item => item.Date);
 
-    var bgData = Model.CovidInfo
-                        .Where(item => item.Country.Equals("Bulgaria", StringComparison.InvariantCultureIgnoreCase))
-                        .Where(item => item.Date > new DateTime(2020, 03, 03).Date)
-                        .OrderBy(item => item.Date);
-
-    var chinaData = Model.CovidInfo
-                        .Where(item => item.Country.Equals("Mainland China"))
-                        .Where(item => item.Date > new DateTime(2020, 03, 03).Date)
-                        .OrderBy(item => item.Date);
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/lib/chartist/chartist.min.css" />    
+    <link rel="stylesheet" href="~/lib/chartist/chartist.min.css" />
+    <link rel="stylesheet" href="~/lib/chartjs/Chart.min.css" />
 }
 
 @section Scripts {
-     <script type="text/javascript" src="/lib/d3/d3.min.js"></script>     
-     <script type="text/javascript" src="/lib/chartist/chartist.min.js"></script>    
-     <script type="text/javascript" src="/lib/chartist-plugin-legend/chartist-plugin-legend.min.js"></script>    
+    <script type="text/javascript" src="~/lib/chartjs/Chart.min.js"></script>
 
-     <script>
-
-        var chart = new Chartist.Line('.chart', {
-            labels: [@Html.Raw(String.Join(",", chartSeries.Select(item => $"'{item.Date.ToString("dd MMM")}'")))],
-            series: [
-                { name: "Germany Cofirmed", data: [@String.Join(",", chartSeries.Select(item => item.ConfirmedCases.ToString()))] },
-                @* { name: "Germany Recovered", data: [@String.Join(",", chartSeries.Select(item => item.RecoveredCases.ToString()))] },
-                { name: "Germany Death Cases", data:[@String.Join(",", chartSeries.Select(item => item.DeathCases.ToString()))] }, *@
-                
-                { name: "Italy", data: [@String.Join(",", italyData.Select(item => item.ConfirmedCases.ToString()))] },
-
-                { name: "Bulgaria", data: [@String.Join(",", bgData.Select(item => item.ConfirmedCases.ToString()))] },
-
-                @* { name: "China", data: [@String.Join(",", chinaData.Select(item => item.ConfirmedCases.ToString()))] } *@
-            ]
-        }, {
-            height: '800px',
-            low: 100,
-            fullWidth: true,
-            plugins: [
-                Chartist.plugins.legend()
-            ]
+    <script>
+        var ctx = document.getElementById('js-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [@Html.Raw(String.Join(",", Model.SelectedCountryCases.Select(item => $"'{item.Date.ToString("dd MMM")}'")))],
+                datasets: [{
+                    label: 'Test',
+                    data: [@String.Join(",", Model.SelectedCountryCases.Select(item => item.ConfirmedCases.ToString()))],
+                    backgroundColor: ['#247BA0']
+                },
+                {
+                    label: 'Test 2',
+                    data: [@String.Join(",", Model.SelectedCountryCases.Select(item => item.DeathCases.ToString()))],
+                    backgroundColor: ['#70C1B3']
+                }]
+            }
         });
-    
-</script>
+    </script>
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@Model.SelectedCountry</h1>
 </div>
 
 
 <div>
 
-<table class="table">
-    <tr>
-        <td>Country</td>
-        <td>Confirmed</td>
-        <td>Recovered</td>
-        <td>Deaths</td>
-    </tr>
-    <tr>
-        <td>Germany</td>
-        <td>
-            @Model.GermanyLastUpdate.ConfirmedCases
-        </td>
-        <td>
-            @Model.GermanyLastUpdate.RecoveredCases
-        </td>
-        <td>
-            @Model.GermanyLastUpdate.DeathCases
-        </td>
-    </tr>
-    <tr>
-        <td>Bulgaria</td>
-        <td>
-            @Model.BulgariaLastUpdate.ConfirmedCases
-        </td>
-        <td>
-            @Model.BulgariaLastUpdate.RecoveredCases
-        </td>
-        <td>
-            @Model.BulgariaLastUpdate.DeathCases
-        </td>
-    </tr>
-    <tr>
-        <td>Belgium</td>
-        <td>
-            @Model.BelgiumLastUpdate.ConfirmedCases
-        </td>
-        <td>
-            @Model.BelgiumLastUpdate.RecoveredCases
-        </td>
-        <td>
-            @Model.BelgiumLastUpdate.DeathCases
-        </td>
-    </tr>
-</table>    
+    <table class="table">
+        <tr>
+            <td>Country</td>
+            <td>Confirmed</td>
+            <td>Recovered</td>
+            <td>Deaths</td>
+        </tr>
+        <tr>
+            <td>Germany</td>
+            <td>
+                @Model.GermanyLastUpdate.ConfirmedCases
+            </td>
+            <td>
+                @Model.GermanyLastUpdate.RecoveredCases
+            </td>
+            <td>
+                @Model.GermanyLastUpdate.DeathCases
+            </td>
+        </tr>
+        <tr>
+            <td>Bulgaria</td>
+            <td>
+                @Model.BulgariaLastUpdate.ConfirmedCases
+            </td>
+            <td>
+                @Model.BulgariaLastUpdate.RecoveredCases
+            </td>
+            <td>
+                @Model.BulgariaLastUpdate.DeathCases
+            </td>
+        </tr>
+        <tr>
+            <td>Belgium</td>
+            <td>
+                @Model.BelgiumLastUpdate.ConfirmedCases
+            </td>
+            <td>
+                @Model.BelgiumLastUpdate.RecoveredCases
+            </td>
+            <td>
+                @Model.BelgiumLastUpdate.DeathCases
+            </td>
+        </tr>
+    </table>
 </div>
 
-<div class="chart">
+<section>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        @Html.DropDownListFor(model => model.SelectedCountry, Model.CountryList.Select(item => new SelectListItem(item, item, item.Equals(Model.SelectedCountry))));
 
-</div>
+        <input type="submit" value="Load" />
+    }
+
+</section>
+
+@*<div class="chart">
+
+    </div>*@
+
+<canvas id="js-chart" width="1000" height="500"></canvas>

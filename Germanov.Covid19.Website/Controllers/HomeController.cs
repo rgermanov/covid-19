@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Germanov.Covid19.Website.Models;
 using Germanov.Covid19.Website.Interfaces;
+using Germanov.Covid19.Website.Models.Home;
 
 namespace Germanov.Covid19.Website.Controllers
 {
@@ -21,23 +22,24 @@ namespace Germanov.Covid19.Website.Controllers
             _covidService = covidDailyStatsService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(HomeRequestModel requestModel)
         {            
             var stats = _covidService.GetStats().ToList();
 
             var viewModel = new HomePageViewMode()
-            {
-                CovidInfo = stats,
+            {                
+                CountryList = GetCountries(stats),
+                SelectedCountry = requestModel.SelectedCountry,
                 GermanyLastUpdate = GetConfirmedCasesByCountry("Germany", stats),
                 BulgariaLastUpdate = GetConfirmedCasesByCountry("Bulgaria", stats),
                 BelgiumLastUpdate = GetConfirmedCasesByCountry("Belgium", stats),
-                ChartSeries = stats
-                                .Where(item => item.Country.Equals("Germany", StringComparison.InvariantCulture))
-                                .ToList()
+
+                SelectedCountryCases = stats.Where(item => item.Country.Equals(requestModel.SelectedCountry, StringComparison.InvariantCultureIgnoreCase)).ToList(),                               
             };
             
             return View(viewModel);
         }
+
 
         public IActionResult Privacy()
         {
@@ -56,6 +58,13 @@ namespace Germanov.Covid19.Website.Controllers
                         .Where(item => item.Country == countryName)
                         .OrderBy(item => item.Date)
                         .Last();
+        }
+        private List<string> GetCountries(List<CovidInfoModel> stats)
+        {
+            return stats.Select(item => item.Country)
+                        .Distinct()
+                        .OrderBy(item => item)
+                        .ToList();
         }
     }
 }
